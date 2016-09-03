@@ -250,7 +250,7 @@ public class SerialMonitor extends ViewPart implements ISerialUser {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				int index = SerialMonitor.this.lineTerminator.getCombo().getSelectionIndex();
-				GetSelectedSerial().write(SerialMonitor.this.sendString.getText(), Common.getLineEnding(index));
+				getSelectedSerial().write(SerialMonitor.this.sendString.getText(), Common.getLineEnding(index));
 				SerialMonitor.this.sendString.setText(Const.EMPTY_STRING);
 				SerialMonitor.this.sendString.setFocus();
 			}
@@ -268,7 +268,7 @@ public class SerialMonitor extends ViewPart implements ISerialUser {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				GetSelectedSerial().reset();
+				getSelectedSerial().reset();
 				SerialMonitor.this.sendString.setFocus();
 			}
 
@@ -302,8 +302,8 @@ public class SerialMonitor extends ViewPart implements ISerialUser {
 	 * 
 	 * @return the serial port selected in the combobox
 	 */
-	protected Serial GetSelectedSerial() {
-		return GetSerial(this.serialPorts.getCombo().getText());
+	protected Serial getSelectedSerial() {
+		return getSerial(this.serialPorts.getCombo().getText());
 	}
 
 	/**
@@ -314,7 +314,7 @@ public class SerialMonitor extends ViewPart implements ISerialUser {
 	 * @return the serial port opened in the serial monitor with the name equal
 	 *         to Comname of found. null if not found
 	 */
-	private Serial GetSerial(String comName) {
+	private Serial getSerial(String comName) {
 		for (Entry<Serial, SerialListener> entry : this.serialConnections.entrySet()) {
 			if (entry.getKey().toString().matches(comName))
 				return entry.getKey();
@@ -350,7 +350,7 @@ public class SerialMonitor extends ViewPart implements ISerialUser {
 				OpenSerialDialogBox comportSelector = new OpenSerialDialogBox(SerialMonitor.this.parent.getShell());
 				comportSelector.create();
 				if (comportSelector.open() == Window.OK) {
-					connectSerial(comportSelector.GetComPort(), comportSelector.GetBaudRate());
+					connectSerial(comportSelector.getComPort(), comportSelector.getBaudRate());
 
 				}
 			}
@@ -422,7 +422,7 @@ public class SerialMonitor extends ViewPart implements ISerialUser {
 	 *            The style that should be used to report the data; Actually
 	 *            this is the index number of the opened port
 	 */
-	public void ReportSerialActivity(String stInfo, int style) {
+	public void reportSerialActivity(String stInfo, int style) {
 		int startPoint = this.monitorOutput.getCharCount();
 		this.monitorOutput.append(stInfo);
 		StyleRange styleRange = new StyleRange();
@@ -439,9 +439,9 @@ public class SerialMonitor extends ViewPart implements ISerialUser {
 	/**
 	 * method to make sure the visualization is correct
 	 */
-	void SerialPortsUpdated() {
+	void serialPortsUpdated() {
 		this.disconnect.setEnabled(this.serialConnections.size() != 0);
-		Serial curSelection = GetSelectedSerial();
+		Serial curSelection = getSelectedSerial();
 		this.serialPorts.setInput(this.serialConnections);
 		if (this.serialConnections.size() == 0) {
 			this.send.setEnabled(false);
@@ -456,7 +456,7 @@ public class SerialMonitor extends ViewPart implements ISerialUser {
 					curSelection = (Serial) this.serialConnections.keySet().toArray()[0];
 				}
 				this.serialPorts.getCombo().setText(curSelection.toString());
-				ComboSerialChanged();
+				comboSerialChanged();
 			}
 		}
 	}
@@ -480,7 +480,7 @@ public class SerialMonitor extends ViewPart implements ISerialUser {
 				theListener.event(System.getProperty("line.separator") + Messages.serialMonitorConnectedTo + comPort //$NON-NLS-1$
 						+ Messages.serialMonitorAt + baudRate + System.getProperty("line.separator")); //$NON-NLS-1$
 				this.serialConnections.put(newSerial, theListener);
-				SerialPortsUpdated();
+				serialPortsUpdated();
 				return;
 			}
 		} else {
@@ -491,21 +491,21 @@ public class SerialMonitor extends ViewPart implements ISerialUser {
 	}
 
 	public void disConnectSerialPort(String comPort) {
-		Serial newSerial = GetSerial(comPort);
+		Serial newSerial = getSerial(comPort);
 		if (newSerial != null) {
 			SerialListener theListener = SerialMonitor.this.serialConnections.get(newSerial);
 			SerialMonitor.this.serialConnections.remove(newSerial);
 			newSerial.removeListener(theListener);
 			newSerial.dispose();
 			theListener.dispose();
-			SerialPortsUpdated();
+			serialPortsUpdated();
 		}
 	}
 
 	/**
 	 * 
 	 */
-	public void ComboSerialChanged() {
+	public void comboSerialChanged() {
 		this.send.setEnabled(this.serialPorts.toString().length() > 0);
 		this.reset.setEnabled(this.serialPorts.toString().length() > 0);
 		this.parent.getShell().setDefaultButton(this.send);
@@ -519,7 +519,7 @@ public class SerialMonitor extends ViewPart implements ISerialUser {
 	 */
 	@Override
 	public boolean pausePort(String portName) {
-		Serial theSerial = GetSerial(portName);
+		Serial theSerial = getSerial(portName);
 		if (theSerial != null) {
 			theSerial.disconnect();
 			return true;
@@ -532,7 +532,7 @@ public class SerialMonitor extends ViewPart implements ISerialUser {
 	 */
 	@Override
 	public void resumePort(String portName) {
-		Serial theSerial = GetSerial(portName);
+		Serial theSerial = getSerial(portName);
 		if (theSerial != null) {
 			if (InstancePreferences.getCleanSerialMonitorAfterUpload()) {
 

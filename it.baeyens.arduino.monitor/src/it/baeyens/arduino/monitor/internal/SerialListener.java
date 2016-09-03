@@ -137,7 +137,7 @@ public class SerialListener implements MessageConsumer {
 			@Override
 			public void run() {
 				try {
-					SerialListener.this.theMonitor.ReportSerialActivity(tempString, SerialListener.this.theColorIndex);
+					SerialListener.this.theMonitor.reportSerialActivity(tempString, SerialListener.this.theColorIndex);
 				} catch (Exception e) {// ignore as we get errors when closing
 					// down
 				}

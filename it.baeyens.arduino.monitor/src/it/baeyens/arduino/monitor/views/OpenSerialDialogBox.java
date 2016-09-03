@@ -90,15 +90,15 @@ public class OpenSerialDialogBox extends Dialog {
 
 	}
 
-	public String GetComPort() {
+	public String getComPort() {
 		return this.selectedPort;
 	}
 
-	public int GetBaudRate() {
+	public int getBaudRate() {
 		return this.selectedRate;
 	}
 
-	public boolean GetDtr() {
+	public boolean getDtr() {
 		return this.selectedDtr;
 	}
 

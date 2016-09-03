@@ -12,7 +12,7 @@ public class ComPortChanged implements ISelectionChangedListener {
 
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
-		this.theSerialMonitor.ComboSerialChanged();
+		this.theSerialMonitor.comboSerialChanged();
 	}
 
 }
