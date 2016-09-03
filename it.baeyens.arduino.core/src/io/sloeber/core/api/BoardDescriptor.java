@@ -95,7 +95,7 @@ public class BoardDescriptor {
 			ArrayList<ConfigurationDescriptor> cfgNamesAndTCIds, CodeDescriptor codeDescription,
 			IProgressMonitor monitor) throws Exception {
 		IProject projectHandle;
-		projectHandle = ResourcesPlugin.getWorkspace().getRoot().getProject(Common.MakeNameCompileSafe(projectName));
+		projectHandle = ResourcesPlugin.getWorkspace().getRoot().getProject(Common.makeCompileSafe(projectName));
 
 		// try {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();

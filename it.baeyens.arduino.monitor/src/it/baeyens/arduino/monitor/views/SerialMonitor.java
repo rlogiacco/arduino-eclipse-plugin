@@ -173,7 +173,7 @@ public class SerialMonitor extends ViewPart implements ISerialUser {
 
 	@Override
 	public void dispose() {
-		Common.UnRegisterSerialUser();
+		Common.unregisterSerialUser();
 
 		for (Entry<Serial, SerialListener> entry : this.serialConnections.entrySet()) {
 			entry.getValue().dispose();
@@ -518,7 +518,7 @@ public class SerialMonitor extends ViewPart implements ISerialUser {
 	 * done ResumePort will be called
 	 */
 	@Override
-	public boolean PauzePort(String portName) {
+	public boolean pausePort(String portName) {
 		Serial theSerial = GetSerial(portName);
 		if (theSerial != null) {
 			theSerial.disconnect();
@@ -531,7 +531,7 @@ public class SerialMonitor extends ViewPart implements ISerialUser {
 	 * see PauzePort
 	 */
 	@Override
-	public void ResumePort(String portName) {
+	public void resumePort(String portName) {
 		Serial theSerial = GetSerial(portName);
 		if (theSerial != null) {
 			if (InstancePreferences.getCleanSerialMonitorAfterUpload()) {

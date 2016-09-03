@@ -170,7 +170,7 @@ public class UploadSketchWrapper {
 						Const.get_Jantje_KEY_PROTOCOL(Const.ACTION_UPLOAD), Const.DEFAULT);
 
 				try {
-					WeStoppedTheComPort = Common.StopSerialMonitor(comPort);
+					WeStoppedTheComPort = Common.stopSerialMonitor(comPort);
 				} catch (Exception e) {
 					Common.log(new Status(IStatus.WARNING, Const.CORE_PLUGIN_ID, Messages.Upload_Error_com_port, e));
 				}
@@ -188,7 +188,7 @@ public class UploadSketchWrapper {
 			} finally {
 				try {
 					if (WeStoppedTheComPort) {
-						Common.StartSerialMonitor(comPort);
+						Common.startSerialMonitor(comPort);
 					}
 				} catch (Exception e) {
 					Common.log(new Status(IStatus.WARNING, Const.CORE_PLUGIN_ID,

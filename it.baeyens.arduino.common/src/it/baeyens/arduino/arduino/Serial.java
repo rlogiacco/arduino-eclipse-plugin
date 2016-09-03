@@ -58,11 +58,11 @@ public class Serial implements SerialPortEventListener {
 	SerialPort port = null;
 	int rate;
 	int parity;
-	int databits;
+	int dataBits;
 
 	// read buffer and streams
 
-	int stopbits;
+	int stopBits;
 	boolean monitor = false;
 
 	// initial state of RTS&DTR line(ON/OFF)
@@ -72,36 +72,36 @@ public class Serial implements SerialPortEventListener {
 
 	String portName;
 
-	private ServiceRegistration<Serial> fServiceRegistration;
+	private ServiceRegistration<Serial> serviceRegistration;
 
-	private List<MessageConsumer> fConsumers;
+	private List<MessageConsumer> consumers;
 
-	public Serial(String iname, int irate) {
-		this(iname, irate, 'N', 8, 1.0f, true);
+	public Serial(String name, int rate) {
+		this(name, rate, 'N', 8, 1.0f, true);
 	}
 
-	public Serial(String iname, int irate, boolean dtr) {
-		this(iname, irate, 'N', 8, 1.0f, dtr);
+	public Serial(String name, int rate, boolean dtr) {
+		this(name, rate, 'N', 8, 1.0f, dtr);
 	}
 
-	public Serial(String iname, int irate, char iparity, int idatabits, float istopbits, boolean dtr) {
-		this.portName = iname;
-		this.rate = irate;
+	public Serial(String name, int rate, char parity, int dataBits, float stopBits, boolean dtr) {
+		this.portName = name;
+		this.rate = rate;
 		this.dtr = dtr;
 
 		this.parity = SerialPort.PARITY_NONE;
-		if (iparity == 'E')
+		if (parity == 'E')
 			this.parity = SerialPort.PARITY_EVEN;
-		if (iparity == 'O')
+		if (parity == 'O')
 			this.parity = SerialPort.PARITY_ODD;
 
-		this.databits = idatabits;
+		this.dataBits = dataBits;
 
-		this.stopbits = SerialPort.STOPBITS_1;
-		if (istopbits == 1.5f)
-			this.stopbits = SerialPort.STOPBITS_1_5;
-		if (istopbits == 2)
-			this.stopbits = SerialPort.STOPBITS_2;
+		this.stopBits = SerialPort.STOPBITS_1;
+		if (stopBits == 1.5f)
+			this.stopBits = SerialPort.STOPBITS_1_5;
+		if (stopBits == 2)
+			this.stopBits = SerialPort.STOPBITS_2;
 		connect();
 
 	}
@@ -142,16 +142,16 @@ public class Serial implements SerialPortEventListener {
 	}
 
 	public void addListener(MessageConsumer consumer) {
-		if (this.fConsumers == null) {
-			this.fConsumers = new ArrayList<>();
+		if (this.consumers == null) {
+			this.consumers = new ArrayList<>();
 		}
-		this.fConsumers.add(consumer);
+		this.consumers.add(consumer);
 	}
 
 	public void removeListener(MessageConsumer consumer) {
-		if (this.fConsumers == null)
+		if (this.consumers == null)
 			return;
-		this.fConsumers.remove(consumer);
+		this.consumers.remove(consumer);
 	}
 
 	public void connect() {
@@ -165,7 +165,7 @@ public class Serial implements SerialPortEventListener {
 				try {
 					this.port = new SerialPort(this.portName);
 					this.port.openPort();
-					this.port.setParams(this.rate, this.databits, this.stopbits, this.parity, this.dtr, this.dtr);
+					this.port.setParams(this.rate, this.dataBits, this.stopBits, this.parity, this.dtr, this.dtr);
 
 					int eventMask = SerialPort.MASK_RXCHAR | SerialPort.MASK_BREAK;
 					this.port.addEventListener(this, eventMask);
@@ -216,8 +216,8 @@ public class Serial implements SerialPortEventListener {
 		notifyConsumersOfEvent("Disconnect of port " + this.port.getPortName() + " executed"); //$NON-NLS-1$ //$NON-NLS-2$
 		disconnect();
 
-		if (this.fServiceRegistration != null) {
-			this.fServiceRegistration.unregister();
+		if (this.serviceRegistration != null) {
+			this.serviceRegistration.unregister();
 		}
 	}
 
@@ -226,23 +226,23 @@ public class Serial implements SerialPortEventListener {
 	}
 
 	private void notifyConsumersOfData(byte[] message) {
-		if (this.fConsumers != null) {
-			for (MessageConsumer consumer : this.fConsumers) {
+		if (this.consumers != null) {
+			for (MessageConsumer consumer : this.consumers) {
 				consumer.message(message);
 			}
 		}
 	}
 
 	private void notifyConsumersOfEvent(String message) {
-		if (this.fConsumers != null) {
-			for (MessageConsumer consumer : this.fConsumers) {
+		if (this.consumers != null) {
+			for (MessageConsumer consumer : this.consumers) {
 				consumer.event(message);
 			}
 		}
 	}
 
 	public void registerService() {
-		this.fServiceRegistration = FrameworkUtil.getBundle(getClass()).getBundleContext().registerService(Serial.class,
+		this.serviceRegistration = FrameworkUtil.getBundle(getClass()).getBundleContext().registerService(Serial.class,
 				this, null);
 	}
 

@@ -53,7 +53,7 @@ public class Common extends InstancePreferences {
 	/**
 	 * This method is to unregister a serial user.
 	 */
-	public static void UnRegisterSerialUser() {
+	public static void unregisterSerialUser() {
 		otherSerialUser = null;
 	}
 
@@ -90,7 +90,7 @@ public class Common extends InstancePreferences {
 	 *            the string that needs to be checked
 	 * @return a name safe to create files or folders
 	 */
-	public static String MakeNameCompileSafe(String name) {
+	public static String makeCompileSafe(String name) {
 		char[] badChars = { ' ', '/', '.', '/', ':', ' ', '\\', '(', ')', '*', '?', '%', '|', '<', '>', ',', '-' };
 
 		String ret = name.trim();
@@ -194,7 +194,7 @@ public class Common extends InstancePreferences {
 	 * 
 	 * @return avrdude upload port prefix
 	 */
-	public static String UploadPortPrefix() {
+	public static String getUploadPortPrefix() {
 		if (Platform.getOS().equals(Platform.OS_WIN32))
 			return UPLOAD_PORT_PREFIX_WIN;
 		if (Platform.getOS().equals(Platform.OS_LINUX))
@@ -216,7 +216,7 @@ public class Common extends InstancePreferences {
 	 * @see parseInt. After error checking and modifications parseInt is used
 	 *      for the conversion
 	 **/
-	public static int ToInt(String number) {
+	public static int toInt(String number) {
 		if (number == null)
 			return 0;
 		if (number.isEmpty())
@@ -236,16 +236,16 @@ public class Common extends InstancePreferences {
 		return null;
 	}
 
-	public static boolean StopSerialMonitor(String mComPort) {
+	public static boolean stopSerialMonitor(String mComPort) {
 		if (otherSerialUser != null) {
-			return otherSerialUser.PauzePort(mComPort);
+			return otherSerialUser.pausePort(mComPort);
 		}
 		return false;
 	}
 
-	public static void StartSerialMonitor(String mComPort) {
+	public static void startSerialMonitor(String mComPort) {
 		if (otherSerialUser != null) {
-			otherSerialUser.ResumePort(mComPort);
+			otherSerialUser.resumePort(mComPort);
 		}
 
 	}
