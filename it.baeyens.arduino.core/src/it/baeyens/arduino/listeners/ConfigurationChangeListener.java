@@ -25,33 +25,33 @@ import it.baeyens.arduino.tools.Libraries;
 
 public class ConfigurationChangeListener implements ICProjectDescriptionListener {
 
-    @Override
-    public void handleEvent(CProjectDescriptionEvent event) {
-	if (event.getEventType() != CProjectDescriptionEvent.ABOUT_TO_APPLY) {
-	    return;
-	}
+	@Override
+	public void handleEvent(CProjectDescriptionEvent event) {
+		if (event.getEventType() != CProjectDescriptionEvent.ABOUT_TO_APPLY) {
+			return;
+		}
 
-	// only handle arduino nature projects
-	try {
-	    if (!event.getProject().hasNature(Const.ARDUINO_NATURE_ID)) {
-		return;
-	    }
-	} catch (Exception e) {
-	    // don't care
-	}
+		// only handle arduino nature projects
+		try {
+			if (!event.getProject().hasNature(Const.ARDUINO_NATURE_ID)) {
+				return;
+			}
+		} catch (Exception e) {
+			// don't care
+		}
 
-	// We have a arduino project so we are safe.
-	ICProjectDescription projDesc = event.getNewCProjectDescription();
-	if (projDesc.getActiveConfiguration() != null) {
+		// We have a arduino project so we are safe.
+		ICProjectDescription projDesc = event.getNewCProjectDescription();
+		if (projDesc.getActiveConfiguration() != null) {
 
-	    Helpers.setTheEnvironmentVariables(projDesc.getProject(), projDesc.getActiveConfiguration(), false);
-	    try {
-		Helpers.addArduinoCodeToProject(projDesc.getProject(), projDesc.getActiveConfiguration());
-	    } catch (Exception e) {
-		Common.log(new Status(IStatus.WARNING, Const.CORE_PLUGIN_ID, "failed to add include folder", e)); //$NON-NLS-1$
-	    }
-	    Libraries.reAttachLibrariesToProject(projDesc.getActiveConfiguration());
+			Helpers.setTheEnvironmentVariables(projDesc.getProject(), projDesc.getActiveConfiguration(), false);
+			try {
+				Helpers.addArduinoCodeToProject(projDesc.getProject(), projDesc.getActiveConfiguration());
+			} catch (Exception e) {
+				Common.log(new Status(IStatus.WARNING, Const.CORE_PLUGIN_ID, "failed to add include folder", e)); //$NON-NLS-1$
+			}
+			Libraries.reAttachLibrariesToProject(projDesc.getActiveConfiguration());
+		}
 	}
-    }
 
 }

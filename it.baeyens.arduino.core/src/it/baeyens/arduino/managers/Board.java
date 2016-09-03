@@ -11,76 +11,76 @@ import java.util.Properties;
 
 public class Board {
 
-    private String name;
+	private String name;
 
-    private String id;
+	private String id;
 
-    private ArduinoPlatform platform;
-    private HierarchicalProperties properties;
+	private ArduinoPlatform platform;
+	private HierarchicalProperties properties;
 
-    public Board() {
-    }
+	public Board() {
+	}
 
-    public Board(String id, HierarchicalProperties properties) {
-	this.properties = properties;
-	this.id = id;
-	this.name = this.properties.getChild("name").getValue(); //$NON-NLS-1$
-    }
+	public Board(String id, HierarchicalProperties properties) {
+		this.properties = properties;
+		this.id = id;
+		this.name = this.properties.getChild("name").getValue(); //$NON-NLS-1$
+	}
 
-    public String getName() {
-	return this.name;
-    }
+	public String getName() {
+		return this.name;
+	}
 
-    public String getId() {
-	return this.id;
-    }
+	public String getId() {
+		return this.id;
+	}
 
-    public ArduinoPlatform getPlatform() {
-	return this.platform;
-    }
+	public ArduinoPlatform getPlatform() {
+		return this.platform;
+	}
 
-    Board setOwners(ArduinoPlatform platform) {
-	this.platform = platform;
-	return this;
-    }
+	Board setOwners(ArduinoPlatform platform) {
+		this.platform = platform;
+		return this;
+	}
 
-    public String getProperty(String key) {
-	return this.properties.getProperty(key);
-    }
+	public String getProperty(String key) {
+		return this.properties.getProperty(key);
+	}
 
-    public Properties getBoardProperties() {
-	return this.properties.flatten();
-    }
+	public Properties getBoardProperties() {
+		return this.properties.flatten();
+	}
 
-    @Override
-    public int hashCode() {
-	final int prime = 31;
-	int result = 1;
-	result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
-	result = prime * result + ((this.platform == null) ? 0 : this.platform.hashCode());
-	return result;
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((this.name == null) ? 0 : this.name.hashCode());
+		result = prime * result + ((this.platform == null) ? 0 : this.platform.hashCode());
+		return result;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-	if (this == obj)
-	    return true;
-	if (obj == null)
-	    return false;
-	if (getClass() != obj.getClass())
-	    return false;
-	Board other = (Board) obj;
-	if (this.name == null) {
-	    if (other.name != null)
-		return false;
-	} else if (!this.name.equals(other.name))
-	    return false;
-	if (this.platform == null) {
-	    if (other.platform != null)
-		return false;
-	} else if (!this.platform.equals(other.platform))
-	    return false;
-	return true;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Board other = (Board) obj;
+		if (this.name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!this.name.equals(other.name))
+			return false;
+		if (this.platform == null) {
+			if (other.platform != null)
+				return false;
+		} else if (!this.platform.equals(other.platform))
+			return false;
+		return true;
+	}
 
 }

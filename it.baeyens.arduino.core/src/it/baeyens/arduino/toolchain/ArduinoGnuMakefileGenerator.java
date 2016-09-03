@@ -2170,12 +2170,13 @@ public class ArduinoGnuMakefileGenerator implements IManagedBuilderMakefileGener
 
 				// Try to add the rule for the file
 				// IPath's - build directory relative
-				List<IPath> generatedOutputs = new ArrayList<>(); 
+				List<IPath> generatedOutputs = new ArrayList<>();
 				// IPath's - build directory relative or absolute
-				List<IPath> generatedDepFiles = new ArrayList<>(); // 
-				
-				// MODED moved JABA JAn Baeyens get the out type from the add source call
-				this.usedOutType = null; 
+				List<IPath> generatedDepFiles = new ArrayList<>(); //
+
+				// MODED moved JABA JAn Baeyens get the out type from the add
+				// source call
+				this.usedOutType = null;
 				addRuleForSource(relativePath, ruleBuffer, resource, sourceLocation, rcInfo, generatedSource,
 						generatedDepFiles, generatedOutputs);
 
@@ -3105,8 +3106,7 @@ public class ArduinoGnuMakefileGenerator implements IManagedBuilderMakefileGener
 	 *            build directory
 	 */
 	protected void calculateOutputsForSource(ITool tool, String relativePath, IResource resource, IPath sourceLocation,
-			List<IPath> ruleOutputs, List<IPath> enumeratedPrimaryOutputs,
-			List<IPath> enumeratedSecondaryOutputs) {
+			List<IPath> ruleOutputs, List<IPath> enumeratedPrimaryOutputs, List<IPath> enumeratedSecondaryOutputs) {
 		String inExt = sourceLocation.getFileExtension();
 		String outExt = tool.getOutputExtension(inExt);
 		// IResourceInfo rcInfo = tool.getParentResourceInfo();

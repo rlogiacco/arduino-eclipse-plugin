@@ -20,34 +20,35 @@ import it.baeyens.arduino.listeners.ProjectExplorerListener;
 
 public class AddLibraryAction extends AbstractHandler {
 
-    @Override
-    public Object execute(ExecutionEvent event) throws ExecutionException {
-	if (!InstancePreferences.isConfigured(true))
-	    return null;
-	IProject SelectedProjects[] = ProjectExplorerListener.getSelectedProjects();
-	switch (SelectedProjects.length) {
-	case 0:
-	    Common.log(new Status(IStatus.ERROR, Const.CORE_PLUGIN_ID, "No project found to build")); //$NON-NLS-1$
-	    break;
-	case 1:
-	    //
-	    IWizardDescriptor wizardDescriptor = PlatformUI.getWorkbench().getImportWizardRegistry()
-		    .findWizard("it.baeyens.arduino.Import_Arduino_Libraries"); //$NON-NLS-1$
-	    IWizard wizard;
-	    try {
-		wizard = wizardDescriptor.createWizard();
-	    } catch (CoreException e) {
-		Common.log(new Status(IStatus.ERROR, Const.CORE_PLUGIN_ID, "Failed to find import wizard", e)); //$NON-NLS-1$
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		if (!InstancePreferences.isConfigured(true))
+			return null;
+		IProject SelectedProjects[] = ProjectExplorerListener.getSelectedProjects();
+		switch (SelectedProjects.length) {
+		case 0:
+			Common.log(new Status(IStatus.ERROR, Const.CORE_PLUGIN_ID, "No project found to build")); //$NON-NLS-1$
+			break;
+		case 1:
+			//
+			IWizardDescriptor wizardDescriptor = PlatformUI.getWorkbench().getImportWizardRegistry()
+					.findWizard("it.baeyens.arduino.Import_Arduino_Libraries"); //$NON-NLS-1$
+			IWizard wizard;
+			try {
+				wizard = wizardDescriptor.createWizard();
+			} catch (CoreException e) {
+				Common.log(new Status(IStatus.ERROR, Const.CORE_PLUGIN_ID, "Failed to find import wizard", e)); //$NON-NLS-1$
+				return null;
+			}
+			WizardDialog wd = new WizardDialog(ConsolePlugin.getStandardDisplay().getActiveShell(), wizard);
+			wd.setTitle(wizard.getWindowTitle());
+			wd.open();
+			break;
+		default:
+			Common.log(new Status(IStatus.ERROR, Const.CORE_PLUGIN_ID,
+					"Adding libraries to multiple projects is not supported")); //$NON-NLS-1$
+		}
 		return null;
-	    }
-	    WizardDialog wd = new WizardDialog(ConsolePlugin.getStandardDisplay().getActiveShell(), wizard);
-	    wd.setTitle(wizard.getWindowTitle());
-	    wd.open();
-	    break;
-	default:
-	    Common.log(new Status(IStatus.ERROR, Const.CORE_PLUGIN_ID, "Adding libraries to multiple projects is not supported")); //$NON-NLS-1$
 	}
-	return null;
-    }
 
 }

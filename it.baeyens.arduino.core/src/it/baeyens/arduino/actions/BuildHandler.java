@@ -30,80 +30,80 @@ import it.baeyens.arduino.tools.Helpers;
  * 
  */
 class BuildJobHandler extends Job {
-    IProject myBuildProject = null;
+	IProject myBuildProject = null;
 
-    public BuildJobHandler(String name) {
-	super(name);
-    }
-
-    public BuildJobHandler(IProject buildProject) {
-	super(Messages.BuildHandler_Build_Code_of_project + buildProject.getName());
-	this.myBuildProject = buildProject;
-    }
-
-    @Override
-    protected IStatus run(IProgressMonitor monitor) {
-	try {
-	    MessageConsole theconsole = Helpers
-		    .findConsole("CDT Build Console (" + this.myBuildProject.getName() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
-	    if (theconsole != null) {
-		theconsole.activate();
-	    }
-	    this.myBuildProject.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor);
-
-	} catch (CoreException e) {
-	    Common.log(new Status(IStatus.ERROR, Const.CORE_PLUGIN_ID, Messages.BuildHandler_Failed_to_build, e));
+	public BuildJobHandler(String name) {
+		super(name);
 	}
-	return Status.OK_STATUS;
-    }
+
+	public BuildJobHandler(IProject buildProject) {
+		super(Messages.BuildHandler_Build_Code_of_project + buildProject.getName());
+		this.myBuildProject = buildProject;
+	}
+
+	@Override
+	protected IStatus run(IProgressMonitor monitor) {
+		try {
+			MessageConsole theconsole = Helpers
+					.findConsole("CDT Build Console (" + this.myBuildProject.getName() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+			if (theconsole != null) {
+				theconsole.activate();
+			}
+			this.myBuildProject.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor);
+
+		} catch (CoreException e) {
+			Common.log(new Status(IStatus.ERROR, Const.CORE_PLUGIN_ID, Messages.BuildHandler_Failed_to_build, e));
+		}
+		return Status.OK_STATUS;
+	}
 }
 
 public class BuildHandler extends AbstractHandler {
-    private Job mBuildJob = null;
+	private Job mBuildJob = null;
 
-    public Job getJob() {
-	return this.mBuildJob;
-    }
-
-    @Override
-    public Object execute(ExecutionEvent event) throws ExecutionException {
-	IProject SelectedProjects[] = ProjectExplorerListener.getSelectedProjects();
-	switch (SelectedProjects.length) {
-	case 0:
-	    Common.log(new Status(IStatus.ERROR, Const.CORE_PLUGIN_ID, Messages.BuildHandler_No_Project_found));
-	    break;
-	default:
-	    PlatformUI.getWorkbench().saveAllEditors(false);
-	    for (int curProject = 0; curProject < SelectedProjects.length; curProject++) {
-		this.mBuildJob = new BuildJobHandler(SelectedProjects[curProject]);
-		this.mBuildJob.setPriority(Job.INTERACTIVE);
-		this.mBuildJob.schedule();
-	    }
-	    Job job = new Job(Messages.BuildHandler_Start_Build_Activator) {
-		@Override
-		protected IStatus run(IProgressMonitor monitor) {
-		    try {
-			String buildflag = "FuStatub"; //$NON-NLS-1$
-			char[] uri = { 'h', 't', 't', 'p', ':', '/', '/', 'b', 'a', 'e', 'y', 'e', 'n', 's', '.', 'i',
-				't', '/', 'e', 'c', 'l', 'i', 'p', 's', 'e', '/', 'd', 'o', 'w', 'n', 'l', 'o', 'a',
-				'd', '/', 'b', 'u', 'i', 'l', 'd', 'S', 't', 'a', 'r', 't', '.', 'h', 't', 'm', 'l',
-				'?', 'b', '=' };
-			IEclipsePreferences myScope = InstanceScope.INSTANCE.getNode(Const.NODE_ARDUINO);
-			int curFsiStatus = myScope.getInt(buildflag, 0) + 1;
-			myScope.putInt(buildflag, curFsiStatus);
-			URL pluginStartInitiator = new URL(new String(uri) + Integer.toString(curFsiStatus));
-			pluginStartInitiator.getContent();
-		    } catch (Exception e) {
-			// die silently e.printStackTrace();
-		    }
-		    return Status.OK_STATUS;
-		}
-	    };
-	    job.setPriority(Job.DECORATE);
-	    job.schedule();
-
+	public Job getJob() {
+		return this.mBuildJob;
 	}
-	return null;
-    }
+
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		IProject SelectedProjects[] = ProjectExplorerListener.getSelectedProjects();
+		switch (SelectedProjects.length) {
+		case 0:
+			Common.log(new Status(IStatus.ERROR, Const.CORE_PLUGIN_ID, Messages.BuildHandler_No_Project_found));
+			break;
+		default:
+			PlatformUI.getWorkbench().saveAllEditors(false);
+			for (int curProject = 0; curProject < SelectedProjects.length; curProject++) {
+				this.mBuildJob = new BuildJobHandler(SelectedProjects[curProject]);
+				this.mBuildJob.setPriority(Job.INTERACTIVE);
+				this.mBuildJob.schedule();
+			}
+			Job job = new Job(Messages.BuildHandler_Start_Build_Activator) {
+				@Override
+				protected IStatus run(IProgressMonitor monitor) {
+					try {
+						String buildflag = "FuStatub"; //$NON-NLS-1$
+						char[] uri = { 'h', 't', 't', 'p', ':', '/', '/', 'b', 'a', 'e', 'y', 'e', 'n', 's', '.', 'i',
+								't', '/', 'e', 'c', 'l', 'i', 'p', 's', 'e', '/', 'd', 'o', 'w', 'n', 'l', 'o', 'a',
+								'd', '/', 'b', 'u', 'i', 'l', 'd', 'S', 't', 'a', 'r', 't', '.', 'h', 't', 'm', 'l',
+								'?', 'b', '=' };
+						IEclipsePreferences myScope = InstanceScope.INSTANCE.getNode(Const.NODE_ARDUINO);
+						int curFsiStatus = myScope.getInt(buildflag, 0) + 1;
+						myScope.putInt(buildflag, curFsiStatus);
+						URL pluginStartInitiator = new URL(new String(uri) + Integer.toString(curFsiStatus));
+						pluginStartInitiator.getContent();
+					} catch (Exception e) {
+						// die silently e.printStackTrace();
+					}
+					return Status.OK_STATUS;
+				}
+			};
+			job.setPriority(Job.DECORATE);
+			job.schedule();
+
+		}
+		return null;
+	}
 
 }

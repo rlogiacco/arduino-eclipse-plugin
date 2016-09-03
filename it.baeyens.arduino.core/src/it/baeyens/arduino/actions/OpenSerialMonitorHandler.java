@@ -26,55 +26,55 @@ import it.baeyens.arduino.listeners.ProjectExplorerListener;
  */
 public class OpenSerialMonitorHandler extends AbstractHandler {
 
-    @Override
-    public Object execute(ExecutionEvent event) throws ExecutionException {
-	try {
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		try {
 
-	    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-		    .showView("it.baeyens.arduino.monitor.views.SerialMonitor"); //$NON-NLS-1$
-	    // find all projects
-	    IProject SelectedProjects[] = ProjectExplorerListener.getSelectedProjects();
-	    // if there are project selected and the autoConnectScope feature is
-	    // on
-	    if ((SelectedProjects.length > 0) && (InstancePreferences.getOpenSerialWithMonitor() == true)) {
-		for (IProject curproject : SelectedProjects) {
-		    int baud = getBaudRate(curproject);
-		    if (baud > 0) {
-			String comPort = Common.getBuildEnvironmentVariable(curproject, Const.ENV_KEY_JANTJE_UPLOAD_PORT,
-				Const.EMPTY_STRING);
-			if (!comPort.isEmpty()) {
-			    it.baeyens.arduino.monitor.SerialConnection.add(comPort, baud);
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+					.showView("it.baeyens.arduino.monitor.views.SerialMonitor"); //$NON-NLS-1$
+			// find all projects
+			IProject SelectedProjects[] = ProjectExplorerListener.getSelectedProjects();
+			// if there are project selected and the autoConnectScope feature is
+			// on
+			if ((SelectedProjects.length > 0) && (InstancePreferences.getOpenSerialWithMonitor() == true)) {
+				for (IProject curproject : SelectedProjects) {
+					int baud = getBaudRate(curproject);
+					if (baud > 0) {
+						String comPort = Common.getBuildEnvironmentVariable(curproject,
+								Const.ENV_KEY_JANTJE_UPLOAD_PORT, Const.EMPTY_STRING);
+						if (!comPort.isEmpty()) {
+							it.baeyens.arduino.monitor.SerialConnection.add(comPort, baud);
+						}
+					}
+				}
 			}
-		    }
+		} catch (PartInitException e) {
+			e.printStackTrace();
 		}
-	    }
-	} catch (PartInitException e) {
-	    e.printStackTrace();
+		return null;
 	}
-	return null;
-    }
 
-    /**
-     * given a project look in the source code for the line of code that sets
-     * the baud rate on the board Serial.begin([baudRate]);
-     * 
-     * 
-     * 
-     * return the integer value of [baudrate] or in case of error a negative
-     * value
-     * 
-     * @param iProject
-     * @return
-     */
-    private static int getBaudRate(IProject iProject) {
-	String parentFunc = "setup"; //$NON-NLS-1$
-	String childFunc = "Serial.begin"; //$NON-NLS-1$
-	String baudRate = IndexHelper.findParameterInFunction(iProject, parentFunc, childFunc, null);
-	if (baudRate == null) {
-	    return -1;
+	/**
+	 * given a project look in the source code for the line of code that sets
+	 * the baud rate on the board Serial.begin([baudRate]);
+	 * 
+	 * 
+	 * 
+	 * return the integer value of [baudrate] or in case of error a negative
+	 * value
+	 * 
+	 * @param iProject
+	 * @return
+	 */
+	private static int getBaudRate(IProject iProject) {
+		String parentFunc = "setup"; //$NON-NLS-1$
+		String childFunc = "Serial.begin"; //$NON-NLS-1$
+		String baudRate = IndexHelper.findParameterInFunction(iProject, parentFunc, childFunc, null);
+		if (baudRate == null) {
+			return -1;
+		}
+		return Integer.parseInt(baudRate);
+
 	}
-	return Integer.parseInt(baudRate);
-
-    }
 
 }

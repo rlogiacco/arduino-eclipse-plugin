@@ -40,39 +40,39 @@ import javax.jmdns.NetworkTopologyDiscovery;
 
 public class NetworkChecker extends TimerTask {
 
-    private final NetworkTopologyDiscovery topology;
+	private final NetworkTopologyDiscovery topology;
 
-    private Set<InetAddress> knownAddresses;
+	private Set<InetAddress> knownAddresses;
 
-    public NetworkChecker(NetworkTopologyDiscovery topology) {
-	super();
-	this.topology = topology;
-	this.knownAddresses = Collections.synchronizedSet(new HashSet<InetAddress>());
-    }
-
-    public void start(Timer timer) {
-	timer.schedule(this, 0, 3000);
-    }
-
-    @Override
-    public void run() {
-	try {
-	    InetAddress[] curentAddresses = this.topology.getInetAddresses();
-	    Set<InetAddress> current = new HashSet<>(curentAddresses.length);
-	    for (InetAddress address : curentAddresses) {
-		current.add(address);
-		if (!this.knownAddresses.contains(address)) {
-		    NetworkDiscovery.inetAddressAdded(address);
-		}
-	    }
-	    for (InetAddress address : this.knownAddresses) {
-		if (!current.contains(address)) {
-		    NetworkDiscovery.inetAddressRemoved(address);
-		}
-	    }
-	    this.knownAddresses = current;
-	} catch (Exception e) {
-	    e.printStackTrace();
+	public NetworkChecker(NetworkTopologyDiscovery topology) {
+		super();
+		this.topology = topology;
+		this.knownAddresses = Collections.synchronizedSet(new HashSet<InetAddress>());
 	}
-    }
+
+	public void start(Timer timer) {
+		timer.schedule(this, 0, 3000);
+	}
+
+	@Override
+	public void run() {
+		try {
+			InetAddress[] curentAddresses = this.topology.getInetAddresses();
+			Set<InetAddress> current = new HashSet<>(curentAddresses.length);
+			for (InetAddress address : curentAddresses) {
+				current.add(address);
+				if (!this.knownAddresses.contains(address)) {
+					NetworkDiscovery.inetAddressAdded(address);
+				}
+			}
+			for (InetAddress address : this.knownAddresses) {
+				if (!current.contains(address)) {
+					NetworkDiscovery.inetAddressRemoved(address);
+				}
+			}
+			this.knownAddresses = current;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

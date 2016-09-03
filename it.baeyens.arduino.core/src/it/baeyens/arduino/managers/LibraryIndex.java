@@ -14,7 +14,7 @@ public class LibraryIndex {
 
 	// category name to library name
 	private Map<String, Set<String>> categories = new HashMap<>();
-	
+
 	// library name to latest version of library
 	private Map<String, Library> latestLibs = new HashMap<>();
 

@@ -6,17 +6,17 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
 public class ApplicationWorkbenchAdvisor extends WorkbenchAdvisor {
 
-    private static final String PERSPECTIVE_ID = "it.baeyens.arduino.application.perspective"; //$NON-NLS-1$
+	private static final String PERSPECTIVE_ID = "it.baeyens.arduino.application.perspective"; //$NON-NLS-1$
 
-    @Override
-    public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
-	System.out.println("Jaba Was here"); //$NON-NLS-1$
-	return new ApplicationWorkbenchWindowAdvisor(configurer);
-    }
+	@Override
+	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
+		System.out.println("Jaba Was here"); //$NON-NLS-1$
+		return new ApplicationWorkbenchWindowAdvisor(configurer);
+	}
 
-    @Override
-    public String getInitialWindowPerspectiveId() {
-	System.out.println("Jaba Was here"); //$NON-NLS-1$
-	return PERSPECTIVE_ID;
-    }
+	@Override
+	public String getInitialWindowPerspectiveId() {
+		System.out.println("Jaba Was here"); //$NON-NLS-1$
+		return PERSPECTIVE_ID;
+	}
 }

@@ -12,17 +12,18 @@
 package multichannel;
 
 /**
- * Listener for an empty stack. It enables you to input more values only if the stack runs out of values.
+ * Listener for an empty stack. It enables you to input more values only if the
+ * stack runs out of values.
  * 
  * @author Wim.Jongman (@remainsoftware.com)
  * 
  */
 public abstract class OscilloscopeStackAdapter {
 
-    /**
-     * Is called when the stack runs out of values.
-     * 
-     * @param scope
-     */
-    public abstract void stackEmpty(Oscilloscope scope, int channel);
+	/**
+	 * Is called when the stack runs out of values.
+	 * 
+	 * @param scope
+	 */
+	public abstract void stackEmpty(Oscilloscope scope, int channel);
 }

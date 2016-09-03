@@ -23,50 +23,50 @@ import it.baeyens.arduino.common.InstancePreferences;
 import it.baeyens.arduino.tools.Libraries;
 
 public class IndexerListener implements IIndexChangeListener, IIndexerStateListener {
-    protected Set<IProject> ChangedProjects = new HashSet<>();
-    Job installLibJob = null;
+	protected Set<IProject> ChangedProjects = new HashSet<>();
+	Job installLibJob = null;
 
-    @Override
-    public void indexChanged(IIndexChangeEvent event) {
-	IProject project = event.getAffectedProject().getProject();
-	try {
-	    if (project.hasNature(Const.ARDUINO_NATURE_ID)) {
-		this.ChangedProjects.add(project);
-	    }
-	} catch (CoreException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
-
-    }
-
-    @Override
-    public void indexChanged(IIndexerStateEvent event) {
-
-	if (event.indexerIsIdle()) {
-	    if (InstancePreferences.getAutomaticallyIncludeLibraries()) {
-		if (this.installLibJob == null) {
-		    this.installLibJob = new Job("Adding Arduino libs...") { //$NON-NLS-1$
-
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-			    for (IProject curProject : IndexerListener.this.ChangedProjects) {
-				Libraries.checkLibraries(curProject);
-			    }
-			    IndexerListener.this.ChangedProjects.clear();
-			    IndexerListener.this.installLibJob = null;
-			    return Status.OK_STATUS;
+	@Override
+	public void indexChanged(IIndexChangeEvent event) {
+		IProject project = event.getAffectedProject().getProject();
+		try {
+			if (project.hasNature(Const.ARDUINO_NATURE_ID)) {
+				this.ChangedProjects.add(project);
 			}
-
-		    };
-
-		    this.installLibJob.setPriority(Job.DECORATE);
-		    this.installLibJob.schedule();
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
-	    }
-
 	}
-    }
+
+	@Override
+	public void indexChanged(IIndexerStateEvent event) {
+
+		if (event.indexerIsIdle()) {
+			if (InstancePreferences.getAutomaticallyIncludeLibraries()) {
+				if (this.installLibJob == null) {
+					this.installLibJob = new Job("Adding Arduino libs...") { //$NON-NLS-1$
+
+						@Override
+						protected IStatus run(IProgressMonitor monitor) {
+							for (IProject curProject : IndexerListener.this.ChangedProjects) {
+								Libraries.checkLibraries(curProject);
+							}
+							IndexerListener.this.ChangedProjects.clear();
+							IndexerListener.this.installLibJob = null;
+							return Status.OK_STATUS;
+						}
+
+					};
+
+					this.installLibJob.setPriority(Job.DECORATE);
+					this.installLibJob.schedule();
+				}
+
+			}
+
+		}
+	}
 
 }

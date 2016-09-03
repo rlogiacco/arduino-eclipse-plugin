@@ -15,21 +15,21 @@ import it.baeyens.arduino.tools.Libraries;
 
 public class ReattachLibraries extends AbstractHandler {
 
-    @Override
-    public Object execute(ExecutionEvent arg0) throws ExecutionException {
-	IProject SelectedProjects[] = ProjectExplorerListener.getSelectedProjects();
-	switch (SelectedProjects.length) {
-	case 0:
-	    Common.log(new Status(IStatus.ERROR, Const.CORE_PLUGIN_ID, Messages.ReattachLibraries_no_project_found));
-	    break;
-	default:
-	    PlatformUI.getWorkbench().saveAllEditors(false);
-	    for (int curProject = 0; curProject < SelectedProjects.length; curProject++) {
-		Libraries.reAttachLibrariesToProject(SelectedProjects[curProject]);
-	    }
-	}
-	return null;
+	@Override
+	public Object execute(ExecutionEvent arg0) throws ExecutionException {
+		IProject SelectedProjects[] = ProjectExplorerListener.getSelectedProjects();
+		switch (SelectedProjects.length) {
+		case 0:
+			Common.log(new Status(IStatus.ERROR, Const.CORE_PLUGIN_ID, Messages.ReattachLibraries_no_project_found));
+			break;
+		default:
+			PlatformUI.getWorkbench().saveAllEditors(false);
+			for (int curProject = 0; curProject < SelectedProjects.length; curProject++) {
+				Libraries.reAttachLibrariesToProject(SelectedProjects[curProject]);
+			}
+		}
+		return null;
 
-    }
+	}
 
 }

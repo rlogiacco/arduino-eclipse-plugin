@@ -19,42 +19,42 @@ import io.sloeber.core.api.BoardDescriptor;
  */
 public class NewSketchWizardBoardPage extends WizardPage {
 
-    final Shell shell = new Shell();
+	final Shell shell = new Shell();
 
-    protected BoardSelectionPage mPageLayout = new BoardSelectionPage();
+	protected BoardSelectionPage mPageLayout = new BoardSelectionPage();
 
-    public void setListener(Listener BoardSelectionChangedListener) {
-	this.mPageLayout.setListener(BoardSelectionChangedListener);
-    }
-
-    private Listener completeListener = new Listener() {
-	@Override
-	public void handleEvent(Event e) {
-	    setPageComplete(NewSketchWizardBoardPage.this.mPageLayout.isPageComplete());
+	public void setListener(Listener BoardSelectionChangedListener) {
+		this.mPageLayout.setListener(BoardSelectionChangedListener);
 	}
-    };
 
-    public NewSketchWizardBoardPage(String pageName) {
-	super(pageName);
-	setPageComplete(false);
-    }
+	private Listener completeListener = new Listener() {
+		@Override
+		public void handleEvent(Event e) {
+			setPageComplete(NewSketchWizardBoardPage.this.mPageLayout.isPageComplete());
+		}
+	};
 
-    public NewSketchWizardBoardPage(String pageName, String title, ImageDescriptor titleImage) {
-	super(pageName, title, titleImage);
-	setPageComplete(false);
-    }
+	public NewSketchWizardBoardPage(String pageName) {
+		super(pageName);
+		setPageComplete(false);
+	}
 
-    @Override
-    public void createControl(Composite parent) {
-	Composite composite = new Composite(parent, SWT.NULL);
-	this.mPageLayout.draw(composite);
-	setControl(composite);
-	this.mPageLayout.mFeedbackControl.addListener(SWT.Modify, this.completeListener);
-	setPageComplete(this.mPageLayout.isPageComplete());
-    }
+	public NewSketchWizardBoardPage(String pageName, String title, ImageDescriptor titleImage) {
+		super(pageName, title, titleImage);
+		setPageComplete(false);
+	}
 
-    public BoardDescriptor getBoardID() {
-	return this.mPageLayout.getBoardID();
-    }
+	@Override
+	public void createControl(Composite parent) {
+		Composite composite = new Composite(parent, SWT.NULL);
+		this.mPageLayout.draw(composite);
+		setControl(composite);
+		this.mPageLayout.mFeedbackControl.addListener(SWT.Modify, this.completeListener);
+		setPageComplete(this.mPageLayout.isPageComplete());
+	}
+
+	public BoardDescriptor getBoardID() {
+		return this.mPageLayout.getBoardID();
+	}
 
 }

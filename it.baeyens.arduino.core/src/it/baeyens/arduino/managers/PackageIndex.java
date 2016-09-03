@@ -11,35 +11,35 @@ import java.util.List;
 
 public class PackageIndex {
 
-    private List<Package> packages;
+	private List<Package> packages;
 
-    private String jsonFileName;
+	private String jsonFileName;
 
-    public String getJsonFileName() {
-	return jsonFileName;
-    }
-
-    public void setJsonFileName(String jsonFileName) {
-	this.jsonFileName = jsonFileName;
-    }
-
-    public List<Package> getPackages() {
-	return this.packages;
-    }
-
-    public Package getPackage(String packageName) {
-	for (Package pkg : this.packages) {
-	    if (pkg.getName().equals(packageName)) {
-		return pkg;
-	    }
+	public String getJsonFileName() {
+		return jsonFileName;
 	}
-	return null;
-    }
 
-    void setOwners(Manager manager) {
-	for (Package pkg : this.packages) {
-	    pkg.setOwner(manager);
+	public void setJsonFileName(String jsonFileName) {
+		this.jsonFileName = jsonFileName;
 	}
-    }
+
+	public List<Package> getPackages() {
+		return this.packages;
+	}
+
+	public Package getPackage(String packageName) {
+		for (Package pkg : this.packages) {
+			if (pkg.getName().equals(packageName)) {
+				return pkg;
+			}
+		}
+		return null;
+	}
+
+	void setOwners(Manager manager) {
+		for (Package pkg : this.packages) {
+			pkg.setOwner(manager);
+		}
+	}
 
 }

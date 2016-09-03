@@ -12,15 +12,15 @@ import it.baeyens.arduino.ui.Messages;
 
 public class LinkCommandHandler extends AbstractHandler {
 
-    @Override
-    public Object execute(ExecutionEvent event) throws ExecutionException {
-	try {
-	    String url = event.getParameter("it.baeyens.arduino.core.link.parameter");//$NON-NLS-1$
-	    org.eclipse.swt.program.Program.launch(url);
-	} catch (IllegalArgumentException e) {
-	    Common.log(new Status(IStatus.ERROR, Const.CORE_PLUGIN_ID, Messages.json_browser_fail, e));
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		try {
+			String url = event.getParameter("it.baeyens.arduino.core.link.parameter");//$NON-NLS-1$
+			org.eclipse.swt.program.Program.launch(url);
+		} catch (IllegalArgumentException e) {
+			Common.log(new Status(IStatus.ERROR, Const.CORE_PLUGIN_ID, Messages.json_browser_fail, e));
+		}
+		return null;
 	}
-	return null;
-    }
 
 }

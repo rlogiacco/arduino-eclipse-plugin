@@ -12,14 +12,14 @@ import org.eclipse.ui.console.ConsolePlugin;
 
 public class NewSketchHandler extends AbstractHandler {
 
-    @Override
-    public Object execute(ExecutionEvent event) throws ExecutionException {
-	if (!InstancePreferences.isConfigured(true))
-	    return null;
-	IWizard wizard = new NewSketchWizard();
-	WizardDialog wd = new WizardDialog(ConsolePlugin.getStandardDisplay().getActiveShell(), wizard);
-	wd.setTitle(wizard.getWindowTitle());
-	wd.open();
-	return null;
-    }
+	@Override
+	public Object execute(ExecutionEvent event) throws ExecutionException {
+		if (!InstancePreferences.isConfigured(true))
+			return null;
+		IWizard wizard = new NewSketchWizard();
+		WizardDialog wd = new WizardDialog(ConsolePlugin.getStandardDisplay().getActiveShell(), wizard);
+		wd.setTitle(wizard.getWindowTitle());
+		wd.open();
+		return null;
+	}
 }
